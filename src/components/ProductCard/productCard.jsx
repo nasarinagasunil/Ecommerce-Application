@@ -1,4 +1,23 @@
+import { useCart } from "../../context/cartContext";
+import { findProductInCart } from "../../utils/findProductInCart";
+import { useNavigate } from "react-router-dom";
 export const ProductCard = ({ product }) => {
+
+    const {cart, cartDispatch } = useCart();
+    const navigate = useNavigate();
+
+    const isProductInCart = findProductInCart(cart, product.id);
+
+
+    const onCartClick = (product) =>{
+        !isProductInCart?
+        cartDispatch({
+            type : "ADD_TO_CART",
+            payload : {product}
+        }) : navigate("/cart")
+    }
+    
+
     return (
         <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col w-72 hover:shadow-lg transition-shadow duration-300">
             {/* Product Image */}
@@ -29,11 +48,15 @@ export const ProductCard = ({ product }) => {
                     Add to WishList
                 </button>
                 {/* Add to Cart Button */}
-                <button className="mt-auto bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300">
+                <button onClick={()=>onCartClick(product)} className="mt-auto bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300">
                     <span className="material-icons-outlined text-2xl">
-                        shopping_cart
+                        {
+                            isProductInCart ? 'shopping_cart_checkout' : 'shopping_cart'
+                        }
                     </span>
-                    Add to Cart
+                    {
+                        isProductInCart ? 'Go TO Cart' : 'Add to Cart'
+                    }
                 </button>
             </div>
         </div>
