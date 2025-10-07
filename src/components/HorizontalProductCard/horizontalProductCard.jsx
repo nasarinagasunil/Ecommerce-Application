@@ -1,18 +1,43 @@
 import { useCart } from "../../context/cartContext";
+import { findProductInCart } from "../../utils/findProductInCart";
+import { findProductInWishList } from "../../utils/findProductInWishList";
 export const HorizontalProductCard = ({ product }) => {
 
-    const {cartDispatch} = useCart();
+    const { cart, wishList, cartDispatch } = useCart();
 
-    const onRemoveFromCartClick = (id) =>{
+    const onRemoveFromCartClick = (id) => {
         cartDispatch({
             type: "REMOVE_FROM_CART",
+            payload: { id }
+        })
+    }
+    const onAddToCartClick = () =>{
+        cartDispatch({
+            type: "ADD_TO_CART",
+            payload: {product}
+        })
+    }
+
+    const onRemoveFromWishListClick = (id) =>{
+        cartDispatch({
+            type:"REMOVE_FROM_WISHLIST",
             payload: {id}
         })
-    } 
+    }
+
+    const onAddToWishListClick = (product) =>{
+        cartDispatch({
+            type:"ADD_TO_WISHLIST",
+            payload: {product}
+        })
+    }
+
+    const isProductInCart = findProductInCart(cart, product.id);
+    const isProductInWishList = findProductInWishList(wishList, product.id);
 
 
     return (
-        <div className="flex shadow-lg rounded-2xl overflow-hidden bg-white max-w-xl mx-auto hover:shadow-xl transition-shadow duration-300">
+        <div className="flex shadow-lg rounded-2xl overflow-hidden bg-white max-w-xl hover:shadow-xl transition-shadow duration-300">
             {/* Product Image */}
             <div className="relative w-2/5">
                 <img
@@ -51,20 +76,41 @@ export const HorizontalProductCard = ({ product }) => {
                 {/* Action Buttons */}
                 <div className="flex gap-3 mt-4">
                     {/* Remove from Cart */}
-                    <button onClick={()=>onRemoveFromCartClick(product.id)} className="flex items-center gap-2 bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium px-3 py-2 rounded-lg transition-colors duration-300">
-                        <span className="material-icons-outlined text-2xl">
-                            remove_shopping_cart
-                        </span>
-                        Remove From Cart
-                    </button>
+                    {
+                        isProductInCart ?
+                            <button onClick={() => onRemoveFromCartClick(product.id)} className="flex items-center gap-2 bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium px-3 py-2 rounded-lg transition-colors duration-300">
+                                <span className="material-icons-outlined text-2xl">
+                                    remove_shopping_cart
+                                </span>
+                                Remove From Cart
+                            </button> :
+                            <button onClick={() => onAddToCartClick(product)} className="flex items-center gap-2 bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium px-3 py-2 rounded-lg transition-colors duration-300">
+                                <span className="material-icons-outlined text-2xl">
+                                    shopping_cart
+                                </span>
+                                Add To Cart
+                            </button>
+
+                    }
+
 
                     {/* Move to Wishlist */}
-                    <button className="flex items-center gap-2 border border-[#ff6854] text-[#ff6854] hover:bg-[#fff1ee] px-3 py-2 rounded-lg transition-colors duration-300">
-                        <span className="material-icons-outlined text-2xl">
-                            favorite
-                        </span>
-                        Move to Wishlist
-                    </button>
+                    {
+                        isProductInWishList ?
+                            <button onClick={()=>onRemoveFromWishListClick(product.id)} className="flex items-center gap-2 border border-[#ff6854] text-[#ff6854] hover:bg-[#fff1ee] px-3 py-2 rounded-lg transition-colors duration-300">
+                                <span className="material-icons-outlined text-2xl">
+                                    favorite
+                                </span>
+                                Remove from Wishlist
+                            </button> :
+                            <button onClick={()=>onAddToWishListClick(product)} className="flex items-center gap-2 border border-[#ff6854] text-[#ff6854] hover:bg-[#fff1ee] px-3 py-2 rounded-lg transition-colors duration-300">
+                                <span className="material-icons-outlined text-2xl">
+                                    favorite_border
+                                </span>
+                                Move To WishList
+                            </button>
+                    }
+
                 </div>
             </div>
         </div>

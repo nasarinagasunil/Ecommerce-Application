@@ -5,6 +5,7 @@ import './App.css'
 import { Home } from './pages/Home/home'
 import { Cart } from './pages/Cart/cart'
 import { Routes, Route } from 'react-router-dom'
+import { WishList } from './pages/WishList/wishList'
 function App() {
   const [count, setCount] = useState(0)
 
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/cart' element={<Cart />} />
+        <Route path='/wishlist' element={<WishList />} />
       </Routes>
     </>
   )

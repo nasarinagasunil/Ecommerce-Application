@@ -3,8 +3,10 @@ import { HorizontalProductCard } from "../../components/HorizontalProductCard/ho
 import { Navbar } from "../../components/Navbar/navbar"
 import { useCart } from "../../context/cartContext"
 import { PriceDetails } from "../../components/PriceDetails/priceDetails";
+import { useNavigate } from "react-router-dom";
 export const Cart = () => {
     const { cart } = useCart();
+    const navigate = useNavigate();
     return (
         <>
             <Navbar />
@@ -17,7 +19,7 @@ export const Cart = () => {
                         }
                     </div>
                     {
-                        cart?.length > 0 ? <PriceDetails /> : <p>No Products in the Cart, Add Products</p>
+                        cart?.length > 0 ? <PriceDetails /> : <p>Cart Empty, <span onClick={()=>navigate("/")} className="hover:text-[#ff6854] cursor-pointer">Click here to add products into cart</span></p>
                     }
                     
                 </div>

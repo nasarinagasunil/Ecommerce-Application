@@ -1,0 +1,1 @@
+export const findProductInWishList = (wishList, id) => wishList.some(product=>product.id===id);

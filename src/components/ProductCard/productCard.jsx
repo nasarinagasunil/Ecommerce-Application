@@ -1,13 +1,14 @@
 import { useCart } from "../../context/cartContext";
 import { findProductInCart } from "../../utils/findProductInCart";
+import { findProductInWishList } from "../../utils/findProductInWishList";
 import { useNavigate } from "react-router-dom";
 export const ProductCard = ({ product }) => {
 
-    const {cart, cartDispatch } = useCart();
+    const {cart, wishList, cartDispatch } = useCart();
     const navigate = useNavigate();
 
     const isProductInCart = findProductInCart(cart, product.id);
-
+    const isProductInWishList = findProductInWishList(wishList, product.id);
 
     const onCartClick = (product) =>{
         !isProductInCart?
@@ -17,6 +18,15 @@ export const ProductCard = ({ product }) => {
         }) : navigate("/cart")
     }
     
+
+    const onAddToWishListClick = (product) =>{
+        !isProductInWishList ?
+        cartDispatch({
+            type: "ADD_TO_WISHLIST",
+            payload: {product}
+        }) : navigate("/wishlist")
+    }
+
 
     return (
         <div className="bg-white rounded-2xl shadow-md overflow-hidden flex flex-col w-72 hover:shadow-lg transition-shadow duration-300">
@@ -41,11 +51,16 @@ export const ProductCard = ({ product }) => {
 
 
                 {/* Add to Wishlist Button */}
-                <button className="mt-auto bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300 mb-2">
+                <button onClick={()=>onAddToWishListClick(product)} className="mt-auto bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300 mb-2">
                     <span className="material-icons-outlined text-2xl">
-                        favorite_border
+                        {
+                            isProductInWishList ? 'favorite' : 'favorite_border'
+                        }
+                
                     </span>
-                    Add to WishList
+                    {
+                        isProductInWishList ? 'Go To WishList' : 'Add To WishList'
+                    }
                 </button>
                 {/* Add to Cart Button */}
                 <button onClick={()=>onCartClick(product)} className="mt-auto bg-[#ff6854] hover:bg-[#fc7544] text-white font-medium py-2 rounded-lg flex items-center justify-center gap-2 transition-colors duration-300">

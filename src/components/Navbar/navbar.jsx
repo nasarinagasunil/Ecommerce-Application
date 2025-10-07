@@ -14,7 +14,7 @@ export const Navbar = () => {
                     <h1 className="text-5xl">Shop It</h1>
                 </div>
                 <nav className="ml-auto flex gap-4">
-                    <span className="material-icons-outlined cursor-pointer" style={{ fontSize: "30px" }}>
+                    <span onClick={()=>navigate("/wishlist")} className="material-icons-outlined cursor-pointer" style={{ fontSize: "30px" }}>
                         favorite
                     </span>
                     <span onClick={onShopingCartClick} className="material-icons-outlined cursor-pointer" style={{ fontSize: "30px" }}>
