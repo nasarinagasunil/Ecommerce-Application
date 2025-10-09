@@ -1,6 +1,10 @@
 import { useNavigate } from "react-router-dom"
 import { useState } from "react";
+import { useLogin } from "../../context/loginContext";
 export const Navbar = () => {
+
+   const {token, loginDispatch} = useLogin();
+    
     const navigate = useNavigate();
     const onShopItClick = () =>{
         navigate("/");
@@ -16,7 +20,15 @@ export const Navbar = () => {
     }
 
     const onLoginClick = () =>{
-        navigate("/auth/login");
+        if(token?.access_token){
+            loginDispatch({
+                type: "LOGOUT",
+                payload: token
+            })
+        }else{
+            navigate("/auth/login")
+        }
+        
     }
 
     return (
@@ -38,7 +50,12 @@ export const Navbar = () => {
                         </span>
                         <div>
                             {
-                                isAccountDropDownOpen && <button onClick={onLoginClick} className="bg-[#ff6854] px-2 py-1 text-white cursor-pointer">Login</button>
+                                isAccountDropDownOpen && 
+                                <button onClick={onLoginClick} className="bg-[#ff6854] px-2 py-1 text-white cursor-pointer">
+                                    {
+                                        token?.access_token ? "Logout" : "Login"
+                                    }
+                                </button>
                             }
                         </div>
                     </div>

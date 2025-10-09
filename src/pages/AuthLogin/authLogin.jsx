@@ -5,7 +5,7 @@ export const AuthLogin = () =>{
     return(
         <>
         <Navbar />
-        <main>
+        <main className="mt-4 flex justify-center">
             <Login />
         </main>
         </>
