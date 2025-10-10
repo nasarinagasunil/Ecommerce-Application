@@ -25,6 +25,7 @@ export const Navbar = () => {
                 type: "LOGOUT",
                 payload: token
             })
+            navigate("/auth/login")
         }else{
             navigate("/auth/login")
         }
